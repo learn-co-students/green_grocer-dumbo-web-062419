@@ -1,10 +1,10 @@
 require 'pry'
 
 def consolidate_cart(cart)
-  binding.pry
   # code here
   cart_hash = {}
   cart.each do |cart_item|
+    binding.pry
     cart_item.each do |name, data|
       if cart_hash[name]
         cart_hash[name][:count] += 1
