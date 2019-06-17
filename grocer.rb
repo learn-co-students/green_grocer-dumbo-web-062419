@@ -54,4 +54,4 @@ test_coupon =
 		{:item => "CHEESE", :num => 3, :cost => 15.00}
 	]
 
-checkout(test_cart,test_coupon)
+
