@@ -32,7 +32,6 @@ def apply_coupons(cart, coupons)
       end
     end
     new_cart[grocery] = info
-
   end
   new_cart
 end
@@ -50,7 +49,6 @@ def apply_clearance(cart)
       end
       clearance_cart[item][:clearance] = cart[item][:clearance]
       clearance_cart[item][:count] = cart[item][:count]
-
     end
   end
   clearance_cart
@@ -63,5 +61,4 @@ def checkout(cart: [], coupons: [])
   cart = apply_coupons(cart: cart, coupons: coupons)
   cart = apply_clearance(cart: cart)
   final = nil
-
 end
