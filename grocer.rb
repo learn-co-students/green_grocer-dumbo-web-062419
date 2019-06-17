@@ -1,6 +1,7 @@
 require 'pry'
 
 def consolidate_cart(cart)
+  binding.pry
   organized_cart = {}
   count = 0
   cart.each do |element|
