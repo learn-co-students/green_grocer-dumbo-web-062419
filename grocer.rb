@@ -54,3 +54,22 @@ def apply_coupons(cart, coupons)
   end
   cart
 end
+
+def consolidate_coupons(coupons_array)
+  consolidated_coupon_hash = {}
+  more_consolidated_hash = {}
+  consolidated_cooupon_array = []
+  coupons_array.each do |coupon_hash|
+    puts coupon_hash
+    coupon_name = coupon_hash[:item]
+    if consolidated_coupon_hash.key?(coupon_name) == false
+      consolidated_coupon_hash[coupon_name] =  coupon_hash
+    #else 
+      #consolidated_coupon_hash[coupon_name][:num] += coupon_hash[:num]
+    end
+  end
+  consolidated_coupon_hash.each do |item_name, item_hash_consolidated|
+    consolidated_cooupon_array << item_hash_consolidated
+  end
+  consolidated_cooupon_array
+end
