@@ -65,5 +65,3 @@ def checkout(cart: [], coupons: [])
   final = nil
 
 end
-
-
