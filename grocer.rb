@@ -1,12 +1,12 @@
 
-def consolidate_cart(cart) 
+def consolidate_cart(cart)
   consolidated_hash = {}
   cart.each do |item|
     item.each do |item_name, item_hash|
         if consolidated_hash.key?(item_name) == false
           consolidated_hash[item_name] = item_hash
           consolidated_hash[item_name][:count] = 1
-        else 
+        else
           consolidated_hash[item_name][:count] += 1
         end
     end
@@ -34,7 +34,7 @@ def apply_coupons(cart, coupons)
       coupon_name = coupon_hash[:item]
       if consolidated_coupon_hash.key?(coupon_name) == false
         consolidated_coupon_hash[coupon_name] =  coupon_hash
-      else 
+      else
         consolidated_coupon_hash[coupon_name][:num] += coupon_hash[:num]
       end
     end
@@ -70,7 +70,7 @@ cart = {
 
 coupon = [{:item => "AVOCADO", :num => 2, :cost => 5.0}, {:item => "AVOCADO", :num => 2, :cost => 5.0}, {:item => "KALE", :num => 2, :cost => 3.0}, {:item => "KALE", :num => 2, :cost => 3.0}, {:item => "AVOCADO", :num => 10, :cost => 5.0}, {:item => "KALE", :num => 2, :cost => 3.0}, {:item => "CHEESE", :num => 2, :cost => 3.0}]
 
-apply_coupons(cart, coupon)  
+apply_coupons(cart, coupon)
 
 def consolidate_coupons(coupons_array)
   consolidated_coupon_hash = {}
@@ -81,7 +81,7 @@ def consolidate_coupons(coupons_array)
     coupon_name = coupon_hash[:item]
     if consolidated_coupon_hash.key?(coupon_name) == false
       consolidated_coupon_hash[coupon_name] =  coupon_hash
-    #else 
+    #else
       #consolidated_coupon_hash[coupon_name][:num] += coupon_hash[:num]
     end
   end
@@ -92,4 +92,3 @@ def consolidate_coupons(coupons_array)
 end
 
 consolidate_coupons(coupon)
-
