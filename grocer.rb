@@ -1,5 +1,5 @@
 def consolidate_cart(cart)
-  orgainized_cart = {}
+  organized_cart = {}
   count = 0
   cart.each do |element|
     element.each do |fruit, hash|
