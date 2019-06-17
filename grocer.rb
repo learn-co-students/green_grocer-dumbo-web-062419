@@ -1,64 +1,104 @@
 require 'pry'
-
 def consolidate_cart(cart)
-  # code here
-  cart_hash = {}
-  cart.each do |cart_item|
-    binding.pry
-    cart_item.each do |name, data|
-      if cart_hash[name]
-        cart_hash[name][:count] += 1
-      else
-        cart_hash[name] = data
-        cart_hash[name][:count] = 1
-      end
+  consolidated_hash = {}
+  cart.each do |item|
+    item.each do |item_name, item_hash|
+        if consolidated_hash.key?(item_name) == false
+          consolidated_hash[item_name] = item_hash
+          consolidated_hash[item_name][:count] = 1
+        else
+          consolidated_hash[item_name][:count] += 1
+        end
     end
   end
-  cart_hash
+  consolidated_hash
 end
 
-def apply_coupons(cart, coupons)
-  # code here
-  new_cart = {}
-  cart.each do |grocery, info|
-    coupons.each do |coupon|
-      if grocery == coupon[:item] && info[:count] >= coupon[:num]
-        cart[grocery][:count] = cart[grocery][:count] - coupon[:num]
-        if new_cart[grocery + " W/COUPON"]
-          new_cart[grocery + " W/COUPON"][:count] += 1
-        else
-          new_cart[grocery + " W/COUPON"] = {:price => coupon[:cost], :clearance => cart[grocery][:clearance], :count => 1}
-        end
+def apply_coupons(cart, coupon_array)
+  if cart.size == 0
+    return cart
+  elsif coupon_array.size == 0
+    return cart
+  else
+    consolidated_coupons_hash = {}
+    coupon_array.each do |coupon|
+      item_name = coupon[:item]
+      if consolidated_coupons_hash.key?(item_name) == false
+        coupon = coupon.merge({coupon_count: 1})
+        consolidated_coupons_hash[item_name] = coupon
+      else
+          consolidated_coupons_hash[item_name][:num] += coupon[:num]
+          consolidated_coupons_hash[item_name][:coupon_count] += 1
       end
     end
-    new_cart[grocery] = info
+    consolidated_coupons_hash.each do |consolidated_key, value|
+      if cart.key?(consolidated_key)
+        consolidated_coupon_number = consolidated_coupons_hash[consolidated_key][:num]
+        cart_item_count = cart[consolidated_key][:count]
+        coupon_item_price = consolidated_coupons_hash[consolidated_key][:cost]
+        coupon_count = consolidated_coupons_hash[consolidated_key][:coupon_count]
+        cart_item_count_after_coupon = cart_item_count - consolidated_coupon_number
+        cart_item_clearance = cart[consolidated_key][:clearance]
+        
+        cart[consolidated_key][:count] = cart_item_count_after_coupon
+        cart["#{consolidated_key} W/COUPON"] = {price: coupon_item_price, clearance: cart_item_clearance, count: coupon_count}
+        #if cart[consolidated_key][:count] == 0
+          #cart.delete(consolidated_key)
+        #end
+      end
+    end
   end
-  new_cart
+  cart
 end
 
 def apply_clearance(cart)
-  # code here
-  clearance_cart = {}
-  cart.each do |item, info|
-    clearance_cart[item] = {}
-    info.each do |datum|
-      if cart[item][:clearance]
-        clearance_cart[item][:price] = (cart[item][:price] * 0.80).round(2)
-      else
-        clearance_cart[item][:price] = cart[item][:price]
-      end
-      clearance_cart[item][:clearance] = cart[item][:clearance]
-      clearance_cart[item][:count] = cart[item][:count]
+  cart.each do |item_name, item_hash|
+    if item_hash[:clearance] == true
+      #puts item_name
+      clearance_price = item_hash[:price] - (item_hash[:price] * 0.2)
+      item_hash[:price] = clearance_price
     end
   end
-  clearance_cart
+  cart
 end
 
-
-def checkout(cart: [], coupons: [])
-  # code here
-  cart = consolidate_cart(cart: cart)
-  cart = apply_coupons(cart: cart, coupons: coupons)
-  cart = apply_clearance(cart: cart)
-  final = nil
+def checkout(cart, coupons)
+  total = 0
+  cart = consolidate_cart(cart)
+  coupons_applied = apply_coupons(cart, coupons)
+  
+  clearance_applied = apply_clearance(coupons_applied)
+  #puts clearance_applied
+  clearance_applied.each do |item, item_hash|
+    if item_hash[:count] < 0 
+      item_hash[:count] = -(item_hash[:count])
+    end
+    if !item.include?('W/COUPON')
+      if clearance_applied[item][:count] < clearance_applied["#{item} W/COUPON"][:count]
+        clearance_applied["#{item} W/COUPON"][:count] = clearance_applied[item][:count]
+      end
+    end
+    #if clearance_applied[item][:count] < clearance_applied["#{item} W/COUPON"][:count]
+      #clearance_applied["#{item} W/COUPON"][:count] = clearance_applied[item][:count]
+    #end
+    total += (item_hash[:price] * item_hash[:count])
+    puts total
+  end
+  if total >= 100
+    total = total - (total *0.10)
+  else 
+    total
+  end
 end
+
+coupons = [{:item => "BEER", :num => 2, :cost => 20.00}, {:item => "BEER", :num => 2, :cost => 20.00}]
+
+cart = [
+  {"BEER" => {:price => 13.00, :clearance => false}},
+  {"BEER" => {:price => 13.00, :clearance => false}},
+  {"BEER" => {:price => 13.00, :clearance => false}}
+]
+
+checkout(cart, coupons)
+
+
