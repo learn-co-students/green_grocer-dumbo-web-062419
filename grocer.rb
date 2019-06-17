@@ -41,3 +41,17 @@ end
 def checkout(cart, coupons)
   consolidated_cart = consolidate_cart(cart)
 end
+
+test_cart = {
+  "AVOCADO" => {:price => 3.0, :clearance => true, :count => 4},
+  "KALE"    => {:price => 3.0, :clearance => false, :count => 1}
+}
+
+test_coupon = 
+[
+		{:item => "AVOCADO", :num => 2, :cost => 5.00},
+		{:item => "BEER", :num => 2, :cost => 20.00},
+		{:item => "CHEESE", :num => 3, :cost => 15.00}
+	]
+	
+checkout(test_cart,test_coupon)
