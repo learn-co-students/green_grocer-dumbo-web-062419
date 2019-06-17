@@ -39,7 +39,7 @@ def apply_coupons(cart, coupon_array)
         coupon_count = consolidated_coupons_hash[consolidated_key][:coupon_count]
         cart_item_count_after_coupon = cart_item_count - consolidated_coupon_number
         cart_item_clearance = cart[consolidated_key][:clearance]
-        
+
         cart[consolidated_key][:count] = cart_item_count_after_coupon
         cart["#{consolidated_key} W/COUPON"] = {price: coupon_item_price, clearance: cart_item_clearance, count: coupon_count}
         #if cart[consolidated_key][:count] == 0
@@ -66,11 +66,11 @@ def checkout(cart, coupons)
   total = 0
   cart = consolidate_cart(cart)
   coupons_applied = apply_coupons(cart, coupons)
-  
+
   clearance_applied = apply_clearance(coupons_applied)
   #puts clearance_applied
   clearance_applied.each do |item, item_hash|
-    if item_hash[:count] < 0 
+    if item_hash[:count] < 0
       item_hash[:count] = -(item_hash[:count])
     end
     if !item.include?('W/COUPON')
@@ -86,7 +86,7 @@ def checkout(cart, coupons)
   end
   if total >= 100
     total = total - (total *0.10)
-  else 
+  else
     total
   end
 end
@@ -100,5 +100,3 @@ cart = [
 ]
 
 checkout(cart, coupons)
-
-
