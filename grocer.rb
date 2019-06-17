@@ -91,12 +91,12 @@ def checkout(cart, coupons)
   end
 end
 
-coupons = [{:item => "BEER", :num => 2, :cost => 20.00}, {:item => "BEER", :num => 2, :cost => 20.00}]
+#coupons = [{:item => "BEER", :num => 2, :cost => 20.00}, {:item => "BEER", :num => 2, :cost => 20.00}]
 
-cart = [
-  {"BEER" => {:price => 13.00, :clearance => false}},
-  {"BEER" => {:price => 13.00, :clearance => false}},
-  {"BEER" => {:price => 13.00, :clearance => false}}
-]
+#cart = [
+#  {"BEER" => {:price => 13.00, :clearance => false}},
+#  {"BEER" => {:price => 13.00, :clearance => false}},
+#  {"BEER" => {:price => 13.00, :clearance => false}}
+#]
 
-checkout(cart, coupons)
+#checkout(cart, coupons)
