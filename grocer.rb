@@ -1,18 +1,5 @@
 require 'pry'
 
-
-def consolidate_cart(cart)
-  organized_cart = {}
-  cart.each do |element|
-    element.each do |fruit, hash|
-      organized_cart[fruit] ||= hash
-      organized_cart[fruit][:count] ||= 0
-      organized_cart[fruit][:count] += 1
-    end
-  end
-  return organized_cart
-end
-
 def consolidate_cart(cart)
   organized_cart = {}
   count = 0
@@ -41,8 +28,6 @@ def apply_coupons(cart, coupons)
   end
   cart
 end
-
-
 
 def apply_clearance(cart)
  cart.each do |fruit_name,fruit_hash|
