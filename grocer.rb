@@ -14,4 +14,3 @@ def consolidate_cart(cart)
   end
   return organized_cart
 end
-
