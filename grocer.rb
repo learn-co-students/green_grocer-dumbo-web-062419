@@ -64,7 +64,7 @@ def consolidate_coupons(coupons_array)
     coupon_name = coupon_hash[:item]
     if consolidated_coupon_hash.key?(coupon_name) == false
       consolidated_coupon_hash[coupon_name] =  coupon_hash
-    #else 
+    #else
       #consolidated_coupon_hash[coupon_name][:num] += coupon_hash[:num]
     end
   end
