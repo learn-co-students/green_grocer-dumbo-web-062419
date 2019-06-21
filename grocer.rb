@@ -66,13 +66,13 @@ def apply_coupons(cart, coupons)
   end # End iterating through coupons
 
   cart.each do |grocery_item_name, all_grocery_item_pricing_data|
-    all_grocery_item_pricing_data.each do |grocery_item_pricing_data_key, grocery_item_pricing_data_value|
+    all_grocery_item_pricing_data.each do |px_clearance_cnt_key, px_clearance_cnt_value|
 
-      if grocery_item_pricing_data_key == :clearance
-        cart[grocery_item_with_coupon_name][grocery_item_pricing_data_key] = grocery_item_pricing_data_value
+      if px_clearance_cnt_key == :clearance
+        cart[grocery_item_with_coupon_name][px_clearance_cnt_key] = px_clearance_cnt_value
       end
 
-      if grocery_item_pricing_data_key == :count && grocery_item_name == discounted_grocery_item_name
+      if px_clearance_cnt_key == :count && grocery_item_name == discounted_grocery_item_name
         cart[grocery_item_name][:count] -= num_coupons
       end
 
@@ -89,9 +89,36 @@ end
 # }
 
 
+
+# Discount the price of every item on clearance by twenty percent.
+# Input:
+# Cart = {
+  # "PEANUTBUTTER" => {:price => 3.00, :clearance => true,  :count => 2},
+  # "KALE"         => {:price => 3.00, :clearance => false, :count => 3}
+  # "SOY MILK"     => {:price => 4.50, :clearance => true,  :count => 1}
+# }
 def apply_clearance(cart)
   # code here
+  old_cart = cart
+
+  cart.each do |grocery_item_name, all_grocery_item_pricing_data|
+    all_grocery_item_pricing_data.each do |px_clearance_cnt_key, px_clearance_cnt_value|
+      if px_clearance_cnt_key == :clearance && px_clearance_cnt_value == true
+        cart[grocery_item_name][:price] *= 0.8
+      end
+    end
+    binding.pry
+  end
+
+  cart
 end
+# Output
+# {
+#   "PEANUTBUTTER" => {:price => 2.40, :clearance => true,  :count => 2},
+#   "KALE"         => {:price => 3.00, :clearance => false, :count => 3}
+#   "SOY MILK"     => {:price => 3.60, :clearance => true,  :count => 1}
+# }
+
 
 def checkout(cart, coupons)
   # code here
